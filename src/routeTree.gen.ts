@@ -9,8 +9,38 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SlotRouteImport } from './routes/slot'
+import { Route as ServiceRouteImport } from './routes/service'
+import { Route as DetailsRouteImport } from './routes/details'
+import { Route as ConfirmRouteImport } from './routes/confirm'
+import { Route as BranchRouteImport } from './routes/branch'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SlotRoute = SlotRouteImport.update({
+  id: '/slot',
+  path: '/slot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiceRoute = ServiceRouteImport.update({
+  id: '/service',
+  path: '/service',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DetailsRoute = DetailsRouteImport.update({
+  id: '/details',
+  path: '/details',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmRoute = ConfirmRouteImport.update({
+  id: '/confirm',
+  path: '/confirm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BranchRoute = BranchRouteImport.update({
+  id: '/branch',
+  path: '/branch',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +49,90 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/branch': typeof BranchRoute
+  '/confirm': typeof ConfirmRoute
+  '/details': typeof DetailsRoute
+  '/service': typeof ServiceRoute
+  '/slot': typeof SlotRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/branch': typeof BranchRoute
+  '/confirm': typeof ConfirmRoute
+  '/details': typeof DetailsRoute
+  '/service': typeof ServiceRoute
+  '/slot': typeof SlotRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/branch': typeof BranchRoute
+  '/confirm': typeof ConfirmRoute
+  '/details': typeof DetailsRoute
+  '/service': typeof ServiceRoute
+  '/slot': typeof SlotRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/branch' | '/confirm' | '/details' | '/service' | '/slot'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/branch' | '/confirm' | '/details' | '/service' | '/slot'
+  id:
+    | '__root__'
+    | '/'
+    | '/branch'
+    | '/confirm'
+    | '/details'
+    | '/service'
+    | '/slot'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BranchRoute: typeof BranchRoute
+  ConfirmRoute: typeof ConfirmRoute
+  DetailsRoute: typeof DetailsRoute
+  ServiceRoute: typeof ServiceRoute
+  SlotRoute: typeof SlotRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/slot': {
+      id: '/slot'
+      path: '/slot'
+      fullPath: '/slot'
+      preLoaderRoute: typeof SlotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/service': {
+      id: '/service'
+      path: '/service'
+      fullPath: '/service'
+      preLoaderRoute: typeof ServiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/details': {
+      id: '/details'
+      path: '/details'
+      fullPath: '/details'
+      preLoaderRoute: typeof DetailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirm': {
+      id: '/confirm'
+      path: '/confirm'
+      fullPath: '/confirm'
+      preLoaderRoute: typeof ConfirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/branch': {
+      id: '/branch'
+      path: '/branch'
+      fullPath: '/branch'
+      preLoaderRoute: typeof BranchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +145,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BranchRoute: BranchRoute,
+  ConfirmRoute: ConfirmRoute,
+  DetailsRoute: DetailsRoute,
+  ServiceRoute: ServiceRoute,
+  SlotRoute: SlotRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
